@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Özel</title>
+
+<style>
+body,html{
+margin:0;
+padding:0;
+width:100%;
+min-height:100%;
+background:#000;
+font-family:serif;
+color:#ff0000;
+overflow-x:hidden;
+}
+
+#main-site{
+text-align:center;
+padding:100px 20px 50px 20px;
+min-height:100vh;
+background:linear-gradient(to bottom,#000,#1a0000);
+}
+
+h1{
+font-size:2rem;
+text-shadow:0 0 15px #ff0000;
+}
+
+p{
+font-size:1.2rem;
+color:#ff69b4;
+margin:20px;
+}
+
+.btn-container{
+margin-top:50px;
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:15px 35px;
+font-size:1.3rem;
+border:2px solid #ff0000;
+background:transparent;
+color:white;
+cursor:pointer;
+border-radius:10px;
+transition:.3s;
+}
+
+.btn-yes{
+background:#8b0000;
+}
+
+#typing-text{
+font-size:1.6rem;
+margin-top:40px;
+color:#ff69b4;
+min-height:40px;
+}
+
+/* Kalp yağmuru */
+.heart{
+position:fixed;
+font-size:1.5rem;
+pointer-events:none;
+animation:fall 4s linear forwards;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10vh);opacity:1;}
+100%{transform:translateY(110vh);opacity:0;}
+}
+
+/* Büyük kalp */
+#big-heart{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:0rem;
+z-index:9999;
+pointer-events:none;
+animation:bigHeartAnim 1.2s ease-out forwards;
+}
+
+@keyframes bigHeartAnim{
+0%{font-size:0rem; opacity:0; transform:scale(0);}
+60%{font-size:12rem; opacity:1; transform:scale(1.2);}
+100%{font-size:10rem; opacity:1; transform:scale(1);}
+}
+</style>
+</head>
+<body>
+
+<div id="main-site">
+
+<!-- 1. KISIM -->
+<div id="question1">
+<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
+
+<p>
+meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt)
+</p>
+
+<div class="btn-container">
+<button class="btn btn-yes" id="yes1">Evet</button>
+<button class="btn" id="no1">Hayır</button>
+</div>
+</div>
+
+<!-- 2. KISIM -->
+<div id="question2" style="display:none;">
+<h1 id="typing-text"></h1>
+
+<div class="btn-container" id="second-buttons" style="display:none;">
+<button class="btn btn-yes" id="yes2">Yes</button>
+<button class="btn" id="no2">No</button>
+</div>
+</div>
+
+<div id="result" style="margin-top:50px;font-size:1.6rem;color:#ff69b4;"></div>
+
+</div>
+
+<script>
+const q1=document.getElementById("question1");
+const q2=document.getElementById("question2");
+const yes1=document.getElementById("yes1");
+const yes2=document.getElementById("yes2");
+const no1=document.getElementById("no1");
+const no2=document.getElementById("no2");
+const typingText=document.getElementById("typing-text");
+const secondButtons=document.getElementById("second-buttons");
+const result=document.getElementById("result");
+
+/* Yazı animasyonu */
+function typeWriter(element,text,callback){
+let i=0;
+element.innerHTML="";
+function typing(){
+if(i<text.length){
+element.innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,50);
+}else{
+if(callback) callback();
+}
+}
+typing();
+}
+
+/* 1. EVET */
+yes1.addEventListener("click",()=>{
+q1.style.display="none";
+q2.style.display="block";
+typeWriter(typingText,"forrr ussssss? seni cidden seviyorum...",()=>{
+secondButtons.style.display="flex";
+});
+});
+
+/* 2. EVET */
+yes2.addEventListener("click",()=>{
+secondButtons.style.display="none";
+typeWriter(result,"I really really love you ❤️",()=>{
+spawnHearts();
+showBigHeart();
+});
+});
+
+/* NO KAÇIYOR */
+function moveButton(btn){
+const x=Math.random()*(window.innerWidth-120);
+const y=Math.random()*(window.innerHeight-80);
+btn.style.position="fixed";
+btn.style.left=x+"px";
+btn.style.top=y+"px";
+}
+
+no1.addEventListener("click",()=>moveButton(no1));
+no2.addEventListener("click",()=>moveButton(no2));
+
+/* Kalp yağmuru */
+function spawnHearts(){
+for(let i=0;i<25;i++){
+const h=document.createElement("div");
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.innerText=["❤️","💖","🖤","💕"][Math.floor(Math.random()*4)];
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+}
+}
+
+/* Büyük kalp */
+function showBigHeart(){
+const big=document.createElement("div");
+big.id="big-heart";
+big.innerHTML="❤️";
+document.body.appendChild(big);
+setTimeout(()=>big.remove(),1500);
+}
+</script>
+
+</body>
+</html>
